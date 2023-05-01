@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  db:
+    container_name: db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4:2023-04-11-1
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    ports:
+      - "5050:80"
+  notebook:
+    container_name: notebook
+    image: jupyter/scipy-notebook:2023-04-10
+    restart: always
+    volumes:
+      - ./work:/home/jovyan/work
+    environment:
+      JUPYTER_TOKEN: "docker"
+      GRANT_SUDO: "yes"
+      
+    ports:
+      - "8888:8888"

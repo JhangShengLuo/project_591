@@ -1,0 +1,12 @@
+apache-airflow-providers-databricks==3.3.0
+apache-airflow-providers-amazon==6.2.0
+selenium==4.6.1
+nltk==3.7
+pymssql==2.2.7
+pandas==1.5.3
+numpy==1.24.2
+pandas_redshift==2.0.5
+user-agents==2.2.0
+jupyter==1.0.0
+notebook==6.5.2
+jupyterlab==3.6.0

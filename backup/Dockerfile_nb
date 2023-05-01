@@ -1,0 +1,14 @@
+ARG NOTEBOOK_VERSION
+FROM jupyter/scipy-notebook:${NOTEBOOK_VERSION}
+
+COPY requirements_nb.txt /
+
+USER root
+
+ARG openjdk_version
+
+RUN apt-get update --yes &&  apt-get install --yes --no-install-recommends openjdk-${openjdk_version}-jre-headless  ca-certificates-java &&   apt-get clean && rm -rf /var/lib/apt/lists/* # buildkit
+
+RUN pip install -r /requirements_nb.txt
+
+USER 1000

@@ -1,0 +1,47 @@
+FROM python:3.10
+
+USER root
+
+ENV SHELL=/bin/bash
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+         #linux-libc-dev \
+         gcc \
+         g++ \
+         freetds-dev \
+         libkrb5-dev \
+         libssl-dev \
+         vim \
+  && apt-get autoremove -yqq --purge \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+
+# Install R package
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    r-base \
+    r-base-dev \
+    libxml2-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libproj-dev \
+  && apt-get autoremove -yqq --purge \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY --chown=airflow:root requirements_nb.txt /requirements.txt
+RUN pip install --upgrade pip \
+  && pip install --no-cache-dir cython \
+  && pip install --no-cache-dir -r /requirements.txt
+
+RUN R -e "install.packages('IRkernel')"
+RUN echo "export SHELL=/bin/bash" >> ~/.bashrc
+RUN R -e "IRkernel::installspec()"
+
+ENV MVB_DAG_FOLDER=/opt/airflow/dags
+ENV PYTHONPATH=$PYTHONPATH:$MVB_DAG_FOLDER
+
+
+
