@@ -1,5 +1,9 @@
 # project_591
 
+## TODO
+
+add an uuid make sure don't repeat, from url or from address
+
 
 ## goal 
 
